@@ -11,7 +11,7 @@ public class DisplayPanelObserver implements WeatherObserver {
 
     @Override
     public void update(WeatherData data) {
-        System.out.println("[DisplayPanel #" + id + "] -> Updated: " + data);
+        System.out.println("[DisplayPanel #" + id + "]  Updated: " + data);
     }
 
     @Override

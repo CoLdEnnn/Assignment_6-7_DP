@@ -11,7 +11,7 @@ public class MobileAppObserver implements WeatherObserver {
 
     @Override
     public void update(WeatherData data) {
-        System.out.println("[MobileApp " + name + "] -> New Weather: " + data);
+        System.out.println("[MobileApp " + name + "] New Weather: " + data);
     }
 
     @Override

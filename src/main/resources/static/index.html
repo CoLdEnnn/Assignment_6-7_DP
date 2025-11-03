@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Station Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        section {
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        button {
+            margin-top: 8px;
+            margin-right: 5px;
+            padding: 6px 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        input, select {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-right: 5px;
+        }
+
+        pre {
+            background: #222;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>🌤 Weather Station Control Panel</h1>
+
+<section>
+    <h2>Observers</h2>
+    <input id="observerType" placeholder="Type (mobile/display)">
+    <input id="observerName" placeholder="Name">
+    <button onclick="addObserver()">Add Observer</button>
+    <button onclick="removeObserver()">Remove Observer</button>
+</section>
+
+<section>
+    <h2>Strategy</h2>
+    <select id="strategySelect">
+        <option value="realtime">Real Time</option>
+        <option value="batch">Batch</option>
+        <option value="manual">Manual</option>
+    </select>
+    <button onclick="changeStrategy()">Set Strategy</button>
+</section>
+
+<section>
+    <h2>Actions</h2>
+    <button onclick="updateWeather()">Update Weather</button>
+</section>
+
+<pre id="output"></pre>
+
+<script>
+    const baseUrl = "http://localhost:8080/station";
+
+    async function addObserver() {
+        const type = document.getElementById('observerType').value;
+        const name = document.getElementById('observerName').value;
+        const response = await fetch(`${baseUrl}/add-observer/${type}/${name}`, { method: 'POST' });
+        const text = await response.text();
+        log(text);
+    }
+
+    async function removeObserver() {
+        const name = document.getElementById('observerName').value;
+        const response = await fetch(`${baseUrl}/remove-observer/${name}`, { method: 'DELETE' });
+        const text = await response.text();
+        log(text);
+    }
+
+    async function changeStrategy() {
+        const strategy = document.getElementById('strategySelect').value;
+        const response = await fetch(`${baseUrl}/strategy/${strategy}`, { method: 'POST' });
+        const text = await response.text();
+        log(text);
+    }
+
+    async function updateWeather() {
+        const response = await fetch(`${baseUrl}/update`, { method: 'POST' });
+        const text = await response.text();
+        log(text);
+    }
+
+    function log(msg) {
+        const out = document.getElementById('output');
+        out.textContent += msg + "\n";
+    }
+</script>
+</body>
+</html>
